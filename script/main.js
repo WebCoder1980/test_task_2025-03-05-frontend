@@ -53,7 +53,7 @@ $(document).ready(function() {
     });
 
     $('#prev-btn').on('click', function() {
-        currentPage = Math.max(currentEditId-1, 0);
+        currentPage = Math.max(currentPage-1, 0);
         fetchItems();
     });
 
