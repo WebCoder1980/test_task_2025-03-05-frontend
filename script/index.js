@@ -1,195 +1,124 @@
 const apiHost = 'localhost';
 const apiPort = 8082;
-const apiUrl = `http://${apiHost}:${apiPort}/estore/api/employee`;
+const apiUrlRoot = `http://${apiHost}:${apiPort}/estore/api`;
 
-const pageLength = 10;
-let currentPage = 0;
+const filenameEndpointMap = {
+    'Employee.csv': 'employee',
+    'PositionType.csv': 'positiontype',
+    'ElectroEmployee.csv': 'electroemployee',
+    'Shop.csv': 'shop',
+    'ElectroShop.csv': 'electroshop',
+    'ElectroItem.csv': 'electroitem',
+    'ElectroType.csv': 'electroitemtype',
+    'Purchase.csv': 'purchase',
+    'PurchaseType.csv': 'purchasetype'
+};
 
-let currentEditId = null;
+let filenameEndpointContentMap = {
+    'Employee.csv': null,
+    'PositionType.csv': null,
+    'ElectroEmployee.csv': null,
+    'Shop.csv': null,
+    'ElectroShop.csv': null,
+    'ElectroItem.csv': null,
+    'ElectroType.csv': null,
+    'Purchase.csv': null,
+    'PurchaseType.csv': null
+};
+
+let filenameEndpointPriorityMap = {
+    0: 'ElectroType.csv',
+    1: 'PositionType.csv',
+    2: 'PurchaseType.csv',
+    3: 'ElectroItem.csv',
+    4: 'Shop.csv',
+    5: 'Employee.csv',
+    6: 'Purchase.csv',
+    7: 'ElectroEmployee.csv',
+    8: 'ElectroShop.csv'
+};
 
 $(document).ready(function() {
-    fetchItems();
-
-    $('#create-btn').on('click', function() {
-        const item = {
-            lastName: $('#last-name').val(),
-            firstName: $('#first-name').val(),
-            patronymic: $('#patronymic').val(),
-            birthDate: $('#birth-date').val(),
-            positionId: $('#position-id').val(),
-            shopId: $('#shop-id').val(),
-            gender: $('#gender').val() === 'true'
-        };
-        createItem(item);
-    });
-
-    $('#update-btn').on('click', function() {
-        const item = {
-            lastName: $('#last-name').val(),
-            firstName: $('#first-name').val(),
-            patronymic: $('#patronymic').val(),
-            birthDate: $('#birth-date').val(),
-            positionId: $('#position-id').val(),
-            shopId: $('#shop-id').val(),
-            gender: $('#gender').val() === 'true'
-        };
-        updateItem(currentEditId, item);
-    });
-
-    $('#upload-btn').on('click', function() {
+   $('#upload-btn').on('click', function() {
         const fileInput = $('#file-upload')[0];
         const file = fileInput.files[0];
         if (file) {
-            handleFileUpload(file);
-            fetchItems();
+            handleZIPUpload(file);
         } else {
             alert("Пожалуйста, выберите файл для загрузки.");
         }
-    });
-
-    $('#home-btn').on('click', function() {
-        currentPage = 0;
-        fetchItems();
-    });
-
-    $('#prev-btn').on('click', function() {
-        currentPage = Math.max(currentPage-1, 0);
-        fetchItems();
-    });
-
-    $('#next-btn').on('click', function() {
-        currentPage++;
-        fetchItems();
-    });
+   });
 });
 
-function fetchItems() {
-    const start = currentPage * pageLength;
-    const limit = pageLength;
-    const queryUrl = `${apiUrl}?start=${start}&limit=${limit}`;
+async function handleZIPUpload(file) {
+    if (file) {
+        let res = 0;
 
-    $.get(queryUrl, function(items) {
-        renderItems(items);
-    });
-}
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            const data = e.target.result;
 
-function renderItems(items) {
-    $('#item-table-body').empty();
-    items.forEach(item => {
-        const row = `
-            <tr data-id="${item.id}">
-                <td>${item.id}</td>
-                <td>${item.lastName}</td>
-                <td>${item.firstName}</td>
-                <td>${item.patronymic}</td>
-                <td>${item.birthDate}</td>
-                <td>${item.positionId}</td>
-                <td>${item.shopId}</td>
-                <td>${item.gender ? 'Мужчина' : 'Женщина'}</td>
-                <td>
-                    <button class="edit-btn">Редактировать</button>
-                    <button class="delete-btn">Удалить</button>
-                </td>
-            </tr>
-        `;
-        $('#item-table-body').append(row);
-    });
+            try {
+                const zip = await JSZip.loadAsync(data);
+                const readPromises = [];
 
-    $('.edit-btn').on('click', function() {
-        const row = $(this).closest('tr');
-        currentEditId = row.data('id');
-        $('#last-name').val(row.find('td').eq(1).text());
-        $('#first-name').val(row.find('td').eq(2).text());
-        $('#patronymic').val(row.find('td').eq(3).text());
-        $('#birth-date').val(row.find('td').eq(4).text());
-        $('#position-id').val(row.find('td').eq(5).text());
-        $('#shop-id').val(row.find('td').eq(6).text());
-        $('#gender').val(row.find('td').eq(7).text() === 'Мужчина' ? 'true' : 'false');
-        $('#create-btn').hide();
-        $('#update-btn').show();
-    });
+                zip.forEach(function(filename, file) {
+                    if (filenameEndpointMap.hasOwnProperty(filename)) {
+                        const promise = file.async('arraybuffer').then(function(arrayBuffer) {
+                            filenameEndpointContentMap[filename] = arrayBuffer;
+                        });
+                        readPromises.push(promise);
+                    } else {
+                        console.warn(`Файл ${filename} не найден в маппинге.`);
+                    }
+                });
 
-    $('.delete-btn').on('click', function() {
-        const row = $(this).closest('tr');
-        const id = row.data('id');
-        deleteItem(id);
-    });
+                await Promise.all(readPromises);
 
-    $('#current-page').val(currentPage+1);
-}
+                for (let i = 0; i < 9; i++) {
+                    const filename = filenameEndpointPriorityMap[i];
+                    const content = filenameEndpointContentMap[filename];
+                    const endpoint = filenameEndpointMap[filename];
 
-function createItem(item) {
-    $.ajax({
-        url: apiUrl,
-        method: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(item),
-        success: function() {
-            fetchItems();
-        },
-        error: function(xhr, status, error) {
-            alert("Ошибка при создании элемента! Проверьте, что: 1. Все поля заполнены; 2. Дата-время корректно; 3. Существует ли 'ID должности' и 'ID магазина' в БД.");
+                    if (content) {
+                        await handleCSVUpload(filename, content, endpoint);
+                        res++;
+                    } else {
+                        console.warn(`Файл ${filename} не был прочитан.`);
+                        return;
+                    }
+                }
+
+            } catch (error) {
+                alert('Ошибка при распаковке ZIP файла, убедитесь, что архив целый.');
+            }
+        };
+        
+        reader.readAsArrayBuffer(file);
+
+        if (Object.keys(filenameEndpointPriorityMap).length) {
+            alert('Успешно импортировано!');
         }
-    });
+    } else {
+        alert("Пожалуйста, выберите файл для загрузки.");
+    }
 }
 
-function updateItem(id, item) {
-    $.ajax({
-        url: `${apiUrl}/${id}`,
-        method: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify(item),
-        success: function() {
-            fetchItems();
-            resetForm();
-        },
-        error: function(xhr, status, error) {
-            alert("Ошибка при обновлении элемента! Проверьте, что: 1. Все поля заполнены; 2. Дата-время корректно; 3. Существует ли 'ID должности' и 'ID магазина' в БД.");
-        }
-    });
-}
-
-function deleteItem(id) {
-    $.ajax({
-        url: `${apiUrl}/${id}`,
-        method: 'DELETE',
-        success: function() {
-            fetchItems();
-        },
-        error: function(xhr, status, error) {
-            alert("Ошибка при удалении элемента! Проверьте, что: 1. То, что этот объект не зависит от других; 2. Удаляемый объект всё ещё существует, обновите страницу.");
-        }
-    });
-}
-
-function resetForm() {
-    $('#last-name').val('');
-    $('#first-name').val('');
-    $('#patronymic').val('');
-    $('#birth-date').val('');
-    $('#position-id').val('');
-    $('#shop-id').val('');
-    $('#gender').val('true');
-    $('#create-btn').show();
-    $('#update-btn').hide();
-    currentEditId = null;
-}
-
-function handleFileUpload(file) {
+async function handleCSVUpload(filename, content, endpoint) {
     const formData = new FormData();
-    formData.append('file', file);
+    const blob = new Blob([content], { type: 'application/csv' });
+    formData.append('file', blob, `${endpoint}.csv`);
 
-    $.ajax({
-        url: `${apiUrl}/upload-csv`,
-        method: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            alert("Файл успешно загружен");
-        },
-        error: function(xhr, status, error) {
-            alert("Ошибка при загрузке файла. Проверьте, что: 1. Файл имеет верный формат; 2. Если текущая таблица БД зависит от другой, то убедитесь, что вы импортировали данные в неё.");
-        }
-    });
+    try {
+        const response = await $.ajax({
+            url: `${apiUrlRoot}/${endpoint}/upload-csv`,
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false
+        });
+
+    } catch (ex) {
+        alert(`Ошибка при загрузке файла типа ${filename}. Проверьте, что: 1. Файл имеет верный формат; 2. Если текущая таблица БД зависит от другой, то убедитесь, что вы импортировали данные в неё.`);
+    }
 }
