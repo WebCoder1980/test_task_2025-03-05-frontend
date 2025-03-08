@@ -178,3 +178,44 @@ body {
 #upload-btn:hover {
     background-color: #45a049;
 }
+
+#pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.pagination-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination-btn:hover {
+    background-color: #45a049;
+}
+
+.pagination-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#current-page-label {
+    font-size: 16px;
+}
+
+.pagination-input {
+    padding: 10px;
+    font-size: 16px;
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f4f4f4;
+}

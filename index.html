@@ -33,7 +33,7 @@
             <input type="file" id="file-upload" accept=".json,.csv,.xlsx">
             <button id="upload-btn">Загрузить файл</button>
         </div>
-        
+
         <h1>Сотрудники</h1>
         <div class="form-container">
             <input type="text" id="last-name" placeholder="Фамилия" required>
@@ -69,6 +69,16 @@
                     
                 </tbody>
             </table>
+        </div>
+
+        <div id="pagination-container">
+            <button id="home-btn" class="pagination-btn">Начало</button>
+            <button id="prev-btn" class="pagination-btn">Предыдущая</button>
+            
+            <label for="current-page" id="current-page-label">Страница:</label>
+            <input type="text" id="current-page" class="pagination-input" readonly value="1">
+            
+            <button id="next-btn" class="pagination-btn">Следующая</button>
         </div>
     </div>
     <script src="script/main.js"></script>

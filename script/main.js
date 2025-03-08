@@ -1,7 +1,9 @@
 const apiHost = 'localhost';
 const apiPort = 8082;
-
 const apiUrl = `http://${apiHost}:${apiPort}/estore/api/employee`;
+
+const pageLength = 10;
+let currentPage = 0;
 
 let currentEditId = null;
 
@@ -44,10 +46,29 @@ $(document).ready(function() {
             alert("Пожалуйста, выберите файл для загрузки.");
         }
     });
+
+    $('#home-btn').on('click', function() {
+        currentPage = 0;
+        fetchItems();
+    });
+
+    $('#prev-btn').on('click', function() {
+        currentPage = Math.max(currentEditId-1, 0);
+        fetchItems();
+    });
+
+    $('#next-btn').on('click', function() {
+        currentPage++;
+        fetchItems();
+    });
 });
 
 function fetchItems() {
-    $.get(apiUrl, function(items) {
+    const start = currentPage * pageLength;
+    const limit = pageLength;
+    const queryUrl = `${apiUrl}?start=${start}&limit=${limit}`;
+
+    $.get(queryUrl, function(items) {
         renderItems(items);
     });
 }
@@ -93,6 +114,8 @@ function renderItems(items) {
         const id = row.data('id');
         deleteItem(id);
     });
+
+    $('#current-page').val(currentPage+1);
 }
 
 function createItem(item) {
