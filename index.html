@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD с REST API</title>
+    <link rel="stylesheet" href="style/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>CRUD операции с REST API</h1>
+
+        <div class="form-container">
+            <input type="text" id="last-name" placeholder="Фамилия" required>
+            <input type="text" id="first-name" placeholder="Имя" required>
+            <input type="text" id="patronymic" placeholder="Отчество" required>
+            <input type="date" id="birth-date" required>
+            <input type="number" id="position-id" placeholder="ID Должности" required>
+            <input type="number" id="shop-id" placeholder="ID Магазина" required>
+            <select id="gender">
+                <option value="true">Мужчина</option>
+                <option value="false">Женщина</option>
+            </select>
+            <button id="create-btn">Создать</button>
+            <button id="update-btn" style="display:none;">Обновить</button>
+        </div>
+
+        <div class="list-container">
+            <table id="item-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Дата рождения</th>
+                        <th>Должность ID</th>
+                        <th>Магазин ID</th>
+                        <th>Пол</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="item-table-body">
+                    <tr>
+                        <td>1</td>
+                        <td>Иванов</td>
+                        <td>Иван</td>
+                        <td>Иванович</td>
+                        <td>1980-05-12</td>
+                        <td>101</td>
+                        <td>202</td>
+                        <td>Мужчина</td>
+                        <td>
+                            <button class="edit-btn" onclick="editItem(1)">Редактировать</button>
+                            <button class="delete-btn" onclick="deleteItem(1)">Удалить</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="script/main.js"></script>
+</body>
+</html>
