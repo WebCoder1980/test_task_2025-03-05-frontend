@@ -10,7 +10,75 @@ body {
     padding: 20px;
 }
 
-.container {
+#header {
+    display: flex;
+
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    justify-content: space-between;
+    align-items: center;
+    top: 0;
+    z-index: 100;
+}
+
+#header .logo-container a {
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+}
+
+#mainmenu {
+    display: flex;
+    gap: 10px;
+}
+
+#mainmenu .item {
+    display: flex;
+}
+
+#mainmenu .item a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 15px;
+}
+
+#mainmenu .item a:hover {
+    background-color: #555;
+    border-radius: 4px;
+}
+
+#mainmenu .dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #333;
+    padding: 10px 0;
+    border-radius: 4px;
+    min-width: 200px;
+}
+
+#mainmenu > div {
+    position: relative;
+}
+
+#mainmenu > div:hover .dropdown {
+    display: block;
+}
+
+.dropdown a {
+    display: flex;
+    padding: 8px 15px;
+    font-size: 16px;
+}
+
+.dropdown a:hover {
+    background-color: #444;
+}
+
+#container {
     max-width: 100%;
     margin: 0 auto;
     padding: 20px;
@@ -19,19 +87,19 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
+#container h1 {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.form-container {
+#container .form-container {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
 }
 
-input, select, button {
+#container input, #container select, #container button {
     padding: 10px;
     font-size: 16px;
     margin: 5px;
@@ -39,51 +107,74 @@ input, select, button {
     border-radius: 4px;
 }
 
-button {
+#container button {
     background-color: #4CAF50;
     color: white;
     cursor: pointer;
 }
 
-button:hover {
+#container button:hover {
     background-color: #45a049;
 }
 
-button:disabled {
+#container button:disabled {
     background-color: #ccc;
 }
 
-table {
+#container table {
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-th, td {
+#container th, #container td {
     padding: 10px;
     text-align: left;
     border: 1px solid #ddd;
 }
 
-th {
+#container th {
     background-color: #f4f4f4;
 }
 
-tr:nth-child(even) {
+#container tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-button.delete-btn {
+#container button.delete-btn {
     background-color: #f44336;
 }
 
-button.delete-btn:hover {
+#container button.delete-btn:hover {
     background-color: #e53935;
 }
 
-button.edit-btn {
+#container button.edit-btn {
     background-color: #FFC107;
 }
 
-button.edit-btn:hover {
+#container button.edit-btn:hover {
     background-color: #ff9800;
+}
+
+#file-upload-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#file-upload {
+    padding: 10px;
+    font-size: 16px;
+}
+
+#upload-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-left: 10px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+#upload-btn:hover {
+    background-color: #45a049;
 }

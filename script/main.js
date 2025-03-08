@@ -33,6 +33,17 @@ $(document).ready(function() {
         };
         updateItem(currentEditId, item);
     });
+
+    $('#upload-btn').on('click', function() {
+        const fileInput = $('#file-upload')[0];
+        const file = fileInput.files[0];
+        if (file) {
+            handleFileUpload(file);
+            fetchItems();
+        } else {
+            alert("Пожалуйста, выберите файл для загрузки.");
+        }
+    });
 });
 
 function fetchItems() {
@@ -123,7 +134,7 @@ function deleteItem(id) {
             fetchItems();
         },
         error: function(xhr, status, error) {
-            alert("Ошибка при удалении элемента! Проверьте, что: 1. Удаляемый объект всё ещё существует, обновите страницу.");
+            alert("Ошибка при удалении элемента! Проверьте, что: 1. То, что этот объект не зависит от других; 2. Удаляемый объект всё ещё существует, обновите страницу.");
         }
     });
 }
@@ -139,4 +150,23 @@ function resetForm() {
     $('#create-btn').show();
     $('#update-btn').hide();
     currentEditId = null;
+}
+
+function handleFileUpload(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    $.ajax({
+        url: `${apiUrl}/upload-csv`,
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            alert("Файл успешно загружен");
+        },
+        error: function(xhr, status, error) {
+            alert("Ошибка при загрузке файла. Проверьте, что: 1. Файл имеет верный формат; 2. Если текущая таблица БД зависит от другой, то убедитесь, что вы импортировали данные в неё.");
+        }
+    });
 }
