@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазины - Estore Management</title>
+    <link rel="stylesheet" href="style/style.css">
+    <script src="script/lib/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="header">
+        <div class="logo-container"><a href="index.html">Estore Management</a></div>
+        <div id="mainmenu">
+            <div>
+                <div class="item"><a>Справочники</a></div>
+                <div class="dropdown">
+                    <div class="item"><a href="positiontype.html">Должности</a></div>
+                    <div class="item"><a href="electroitemtype.html">Типы электроники</a></div>
+                    <div class="item"><a href="shop.html">Магазины</a></div>
+                    <div class="item"><a href="purchasetype.html">Типы покупки</a></div>
+                </div>
+            </div>
+            <div class="item"><a href="electroitem.html">Электротовары</a></div>
+            <div>
+                <div class="item"><a href="electroshop.html">Электротовары по магазинам</a></div>
+            </div>
+            <div class="item"><a href="puchase.html">Покупки</a></div>
+            <div class="item"><a href="employee.html">Сотрудники</a></div>
+        </div>
+    </div>
+    <div id="container">
+        <div id="file-upload-container">
+            <input type="file" id="file-upload" accept=".json,.csv,.xlsx">
+            <button id="upload-btn">Загрузить .csv файл</button>
+        </div>
+
+        <h1>Магазины</h1>
+        <div class="form-container">
+            <input type="text" id="name" placeholder="Название" required>
+            <input type="text" id="address" placeholder="Адрес" required>
+            <button id="create-btn">Создать</button>
+            <button id="update-btn" style="display:none;">Обновить</button>
+        </div>
+
+        <div class="list-container">
+            <table id="item-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Адрес</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="item-table-body">
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <div id="pagination-container">
+            <button id="home-btn" class="pagination-btn">Начало</button>
+            <button id="prev-btn" class="pagination-btn">Предыдущая</button>
+            
+            <label for="current-page" id="current-page-label">Страница:</label>
+            <input type="text" id="current-page" class="pagination-input" readonly value="1">
+            
+            <button id="next-btn" class="pagination-btn">Следующая</button>
+        </div>
+    </div>
+    <script src="script/shop.js"></script>
+</body>
+</html>
