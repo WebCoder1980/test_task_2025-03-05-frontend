@@ -6,6 +6,8 @@ const pageLength = 10;
 let currentPage = 0;
 
 let currentEditId = null;
+let currentOrderBy = 'id';
+let sortIsReversed = 'false';
 
 $(document).ready(function() {
     fetchItems();
@@ -58,12 +60,22 @@ $(document).ready(function() {
         currentPage++;
         fetchItems();
     });
+
+    $('#orderby').on('change', function() {
+        currentOrderBy = $(this).val();
+        fetchItems();
+    });
+
+    $('#sortisreversed').on('change', function() {
+        sortIsReversed = $(this).val();
+        fetchItems();
+    });
 });
 
 function fetchItems() {
     const start = currentPage * pageLength;
     const limit = pageLength;
-    const queryUrl = `${apiUrl}?start=${start}&limit=${limit}`;
+    const queryUrl = `${apiUrl}?start=${start}&limit=${limit}&orderby=${currentOrderBy}&sortisreversed=${sortIsReversed}`;
 
     $.get(queryUrl, function(items) {
         renderItems(items);
