@@ -140,6 +140,14 @@ body {
     background-color: #f9f9f9;
 }
 
+#container button.view-electroitem-btn {
+    background-color: #06CC06;
+}
+
+#container button.view-electroitem-btn:hover {
+    background-color: #269926;
+}
+
 #container button.delete-btn {
     background-color: #f44336;
 }

@@ -8,7 +8,10 @@ let currentPage = 0;
 let currentEditShopId = null;
 let currentEditElectroId = null;
 
+const shopId = (new URL(window.location.href).searchParams.get('shopid'));
+
 $(document).ready(function() {
+
     fetchItems();
 
     $('#create-btn').on('click', function() {
@@ -60,7 +63,11 @@ $(document).ready(function() {
 function fetchItems() {
     const start = currentPage * pageLength;
     const limit = pageLength;
-    const queryUrl = `${apiUrl}?start=${start}&limit=${limit}`;
+
+    let queryUrl = `${apiUrl}?start=${start}&limit=${limit}`;
+    if (shopId) {
+        queryUrl += `&shopid=${shopId}`;
+    }
 
     $.get(queryUrl, function(items) {
         renderItems(items);
@@ -70,8 +77,10 @@ function fetchItems() {
 function renderItems(items) {
     $('#item-table-body').empty();
     items.forEach(item => {
+        const isHide = item.quantity<=0; 
         const row = `
-            <tr data-shopid="${item.shopId}" data-electroid="${item.electroId}">
+            <tr data-shopid="${item.shopId}" data-electroid="${item.electroId}" ${isHide ? 'style="opacity: 0.2;"':''}>
+                <td>${isHide?"Нет":"Да"}</td>
                 <td>${item.shopId}</td>
                 <td>${item.electroId}</td>
                 <td>${item.quantity}</td>
@@ -89,9 +98,9 @@ function renderItems(items) {
         currentEditShopId = row.data('shopid');
         currentEditElectroId = row.data('electroid');
 
-        $('#shopId').val(row.find('td').eq(0).text());
-        $('#electroId').val(row.find('td').eq(1).text());
-        $('#quantity').val(row.find('td').eq(2).text());
+        $('#shopId').val(row.find('td').eq(1).text());
+        $('#electroId').val(row.find('td').eq(2).text());
+        $('#quantity').val(row.find('td').eq(3).text());
         $('#create-btn').hide();
         $('#update-btn').show();
     });
