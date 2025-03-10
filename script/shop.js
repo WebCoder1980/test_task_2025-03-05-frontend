@@ -72,7 +72,7 @@ function renderItems(items) {
                 <td>${item.name}</td>
                 <td>${item.address}</td>
                 <td>
-                    <a href="electroshop.html?shopid=${item.id}" target="_blank"><button class="view-electroitem-btn">Товары</button></a>
+                    <a href="./electroshop.html?shopid=${item.id}" target="_blank"><button class="view-electroitem-btn">Товары</button></a>
                     <button class="edit-btn">Редактировать</button>
                     <button class="delete-btn">Удалить</button>
                 </td>
