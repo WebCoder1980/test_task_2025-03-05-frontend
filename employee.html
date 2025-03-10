@@ -40,19 +40,33 @@
 
         <h1>Сотрудники</h1>
         <div class="form-container">
+            <label for="last-name">Фамилия:</label>
             <input type="text" id="last-name" placeholder="Фамилия" required>
+            
+            <label for="first-name">Имя:</label>
             <input type="text" id="first-name" placeholder="Имя" required>
+            
+            <label for="patronymic">Отчество:</label>
             <input type="text" id="patronymic" placeholder="Отчество" required>
+            
+            <label for="birth-date">Дата рождения:</label>
             <input type="date" id="birth-date" required>
+            
+            <label for="position-id">ID Должности:</label>
             <input type="number" id="position-id" placeholder="ID Должности" required>
+            
+            <label for="shop-id">ID Магазина:</label>
             <input type="number" id="shop-id" placeholder="ID Магазина" required>
+            
+            <label for="gender">Пол:</label>
             <select id="gender">
                 <option value="true">Мужчина</option>
                 <option value="false">Женщина</option>
             </select>
+            
             <button id="create-btn">Создать</button>
             <button id="update-btn" style="display:none;">Обновить</button>
-        </div>
+        </div>        
 
         <div class="list-container">
             <table id="item-table">

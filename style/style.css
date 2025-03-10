@@ -97,6 +97,8 @@ body {
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 20px;
+
+    align-items: center;
 }
 
 #container input, #container select, #container button {

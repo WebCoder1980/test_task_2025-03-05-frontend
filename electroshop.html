@@ -41,12 +41,19 @@
         <h1>Связь электротовары - магазины</h1>
 
         <div class="form-container">
+            <label for="shopId">Shop ID:</label>
             <input type="number" id="shopId" placeholder="Shop ID" required>
+        
+            <label for="electroId">Electro ID:</label>
             <input type="number" id="electroId" placeholder="Electro ID" required>
-            <input type="number" id="quantity" placeholder="Колличество" required>
+        
+            <label for="quantity">Количество:</label>
+            <input type="number" id="quantity" placeholder="Количество" required>
+        
             <button id="create-btn">Создать</button>
             <button id="update-btn" style="display:none;">Обновить</button>
         </div>
+        
 
         <div class="list-container">
             <table id="item-table">
