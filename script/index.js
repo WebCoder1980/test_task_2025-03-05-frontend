@@ -48,6 +48,8 @@ $(document).ready(function() {
             alert("Пожалуйста, выберите файл для загрузки.");
         }
    });
+
+   fetchItems();
 });
 
 async function handleZIPUpload(file) {
@@ -121,4 +123,119 @@ async function handleCSVUpload(filename, content, endpoint) {
     } catch (ex) {
         alert(`Ошибка при загрузке файла типа ${filename}. Проверьте, что: 1. Файл имеет верный формат; 2. Если текущая таблица БД зависит от другой, то убедитесь, что вы импортировали данные в неё.`);
     }
+}
+
+function fetchItems() {
+    fetchItemsTable1();
+    fetchItemsTable2();
+    fetchItemsTable3();
+    fetchItemsTable4();
+}
+
+function fetchItemsTable1() {
+    const queryUrl = `http://${apiHost}:${apiPort}/estore/api/purchase/totalcountbyemployee`;
+
+    $.get(queryUrl, function(items) {
+        renderItemsTable1(items);
+    });
+}
+
+function fetchItemsTable2() {
+    const queryUrl = `http://${apiHost}:${apiPort}/estore/api/purchase/totalamountbyemployee`;
+
+    $.get(queryUrl, function(items) {
+        renderItemsTable2(items);
+    });
+}
+
+function fetchItemsTable3() {
+    const queryUrl = `http://${apiHost}:${apiPort}/estore/api/purchase/juniorsalesconsultant-smartwatches`;
+
+    $.get(queryUrl, function(item) {
+        renderItemsTable3(item);
+    });
+}
+
+function fetchItemsTable4() {
+    const queryUrl = `http://${apiHost}:${apiPort}/estore/api/purchase/purchaseamountbypurchasetype`;
+
+    $.get(queryUrl, function(items) {
+        renderItemsTable4(items);
+    });
+}
+
+function renderItemsTable1(items) {
+    $('#item-table1-body').empty();
+
+    items.forEach(item => {
+        const row = `
+            <tr data-id="${item.id}">
+                <td>${item.employeeId}</td>
+                <td>${item.totalCount}</td>
+                <td>${item.lastName}</td>
+                <td>${item.firstName}</td>
+                <td>${item.patronymic}</td>
+                <td>${item.birthDate}</td>
+                <td>${item.positionId}</td>
+                <td>${item.shopId}</td>
+                <td>${item.gender ? 'Мужской' : 'Женский'}</td>
+            </tr>
+        `;
+        $('#item-table1-body').append(row);
+    });
+}
+
+function renderItemsTable2(items) {
+    $('#item-table2-body').empty();
+
+    items.forEach(item => {
+        const row = `
+            <tr data-id="${item.id}">
+                <td>${item.employeeId}</td>
+                <td>${item.totalAmount}</td>
+                <td>${item.lastName}</td>
+                <td>${item.firstName}</td>
+                <td>${item.patronymic}</td>
+                <td>${item.birthDate}</td>
+                <td>${item.positionId}</td>
+                <td>${item.shopId}</td>
+                <td>${item.gender ? 'Мужской' : 'Женский'}</td>
+            </tr>
+        `;
+        $('#item-table2-body').append(row);
+    });
+}
+
+function renderItemsTable3(item) {
+    $('#item-table3-body').empty();
+
+    const row = `
+        <tr data-id="${item.id}">
+            <td>${item.employeeId}</td>
+            <td>${item.salesCount}</td>
+            <td>${item.lastName}</td>
+            <td>${item.firstName}</td>
+            <td>${item.patronymic}</td>
+            <td>${item.birthDate}</td>
+            <td>${item.shopId}</td>
+            <td>${item.gender ? 'Мужской' : 'Женский'}</td>
+        </tr>
+    `;
+    $('#item-table3-body').append(row);
+}
+
+function renderItemsTable4(items) {
+    $('#item-table4-body').empty();
+
+    items.forEach(item => {
+        const row = `
+            <tr data-id="${item.id}">
+                <td>${item.id}</td>
+                <td>${item.sum}</td>
+                <td>${item.name}</td>
+                <td>${item.address}</td>
+            </tr>
+        `;
+        $('#item-table4-body').append(row);
+    });
 }

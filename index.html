@@ -34,12 +34,94 @@
         </div>
     </div>
     <div id="container">
-        <h1>Главная страница</h1>
+        <h1>Импорт ZIP архива</h1>
         <div class="list-container">
             <div id="file-upload-container">
                 <input type="file" id="file-upload" accept=".zip">
                 <button id="upload-btn">Загрузить .zip файл</button>
             </div>
+        </div>
+
+        <h1>Лучшие сотрудники - количество проданных товаров за последний год (макс. 10)</h1>
+        <div class="list-container">
+            <table id="item-table">
+                <thead>
+                    <tr>
+                        <th>Сотрудник ID</th>
+                        <th>Колличество проданных товаров</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Дата рождения</th>
+                        <th>Должность ID</th>
+                        <th>Магазин ID</th>
+                        <th>Пол</th>
+                    </tr>
+                </thead>
+                <tbody id="item-table1-body">
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <h1>Лучшие сотрудники - сумма проданных товаров за последний год (макс. 10)</h1>
+        <div class="list-container">
+            <table id="item-table">
+                <thead>
+                    <tr>
+                        <th>Сотрудник ID</th>
+                        <th>Сумма проданных товаров</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Дата рождения</th>
+                        <th>Должность ID</th>
+                        <th>Магазин ID</th>
+                        <th>Пол</th>
+                    </tr>
+                </thead>
+                <tbody id="item-table2-body">
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <h1>Лучший младший продавец-консультант, продавший больше всех умных часов (если такой есть)</h1>
+        <div class="list-container">
+            <table id="item-table">
+                <thead>
+                    <tr>
+                        <th>Сотрудник ID</th>
+                        <th>Колличество проданных умных часов</th>
+                        <th>Фамилия</th>
+                        <th>Имя</th>
+                        <th>Отчество</th>
+                        <th>Дата рождения</th>
+                        <th>Магазин ID</th>
+                        <th>Пол</th>
+                    </tr>
+                </thead>
+                <tbody id="item-table3-body">
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <h1>Суммы денежных средств, полученной магазином через оплату наличными</h1>
+        <div class="list-container">
+            <table id="item-table">
+                <thead>
+                    <tr>
+                        <th>Магазин ID</th>
+                        <th>Сумма денежных средств</th>
+                        <th>Название магазина</th>
+                        <th>Адрес магазина</th>
+                    </tr>
+                </thead>
+                <tbody id="item-table4-body">
+                    
+                </tbody>
+            </table>
         </div>
     </div>
     <script src="script/index.js"></script>
